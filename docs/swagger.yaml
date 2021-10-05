@@ -1,0 +1,733 @@
+basePath: /
+definitions:
+  auth.ChangePasswordRequest:
+    properties:
+      password:
+        type: string
+    type: object
+  auth.ForgotPasswordRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  users.UpdateEmailRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  users.UpdateNameRequest:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - name
+    - password
+    type: object
+  users.UpdatePasswordRequest:
+    properties:
+      old_password:
+        type: string
+      password:
+        type: string
+    required:
+    - old_password
+    - password
+    type: object
+  view.LoginAuthView:
+    properties:
+      email:
+        type: string
+      email_verified_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      refresh_token:
+        type: string
+      token:
+        type: string
+      token_expiration:
+        type: integer
+    type: object
+  view.RefreshTokenView:
+    properties:
+      refresh_token:
+        type: string
+      token:
+        type: string
+      token_expiration:
+        type: integer
+    type: object
+  view.Response:
+    properties:
+      message:
+        type: string
+      payload: {}
+      success:
+        type: boolean
+    type: object
+  view.UserEmptyView:
+    properties:
+      id:
+        type: string
+    type: object
+  view.UserPublicView:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+host: 127.0.0.1:8080
+info:
+  contact: {}
+  description: Authentication API Service.
+  title: Authentication Server
+  version: "1.0"
+paths:
+  /auth/change-password/{token}:
+    post:
+      consumes:
+      - application/json
+      description: Verify forgot password
+      parameters:
+      - description: User email
+        in: query
+        name: email
+        type: string
+      - description: User token
+        in: path
+        name: token
+        required: true
+        type: string
+      - description: User password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/view.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      tags:
+      - auth
+  /auth/email-resend:
+    post:
+      consumes:
+      - application/json
+      description: Resend email
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/view.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      security:
+      - JWT: []
+      tags:
+      - auth
+  /auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Forgot password
+      parameters:
+      - description: User email
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/view.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      tags:
+      - auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user
+      parameters:
+      - description: User email and password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/view.LoginAuthView'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout user
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/view.UserEmptyView'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      security:
+      - JWT: []
+      tags:
+      - auth
+  /auth/refresh:
+    get:
+      consumes:
+      - application/json
+      description: Get a new access token using refresh token as JWT
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/view.RefreshTokenView'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      security:
+      - JWT: []
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User name, email and password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/view.UserPublicView'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      tags:
+      - auth
+  /auth/verify/{token}:
+    get:
+      consumes:
+      - application/json
+      description: Verify email using token
+      parameters:
+      - description: User email
+        in: query
+        name: email
+        type: string
+      - description: User token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/view.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      tags:
+      - auth
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/view.UserEmptyView'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      security:
+      - JWT: []
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Get user details
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: token
+              type: string
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/view.UserPublicView'
+              type: object
+        "400":
+          description: Bad Request
+          headers:
+            Token:
+              description: token
+              type: string
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          headers:
+            Token:
+              description: token
+              type: string
+          schema:
+            $ref: '#/definitions/view.Response'
+        "404":
+          description: Not Found
+          headers:
+            Token:
+              description: token
+              type: string
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          headers:
+            Token:
+              description: token
+              type: string
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          headers:
+            Token:
+              description: token
+              type: string
+          schema:
+            $ref: '#/definitions/view.Response'
+      security:
+      - JWT: []
+      tags:
+      - users
+  /users/{id}/update-email:
+    put:
+      consumes:
+      - application/json
+      description: Update email
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User email and password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/users.UpdateEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/view.UserEmptyView'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      security:
+      - JWT: []
+      tags:
+      - users
+  /users/{id}/update-name:
+    put:
+      consumes:
+      - application/json
+      description: Update name
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User name and password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/users.UpdateNameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/view.UserEmptyView'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      security:
+      - JWT: []
+      tags:
+      - users
+  /users/{id}/update-password:
+    put:
+      consumes:
+      - application/json
+      description: Update password
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User password and old password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/users.UpdatePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/view.UserEmptyView'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/view.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/view.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/view.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/view.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/view.Response'
+      security:
+      - JWT: []
+      tags:
+      - users
+securityDefinitions:
+  JWT:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
