@@ -10,6 +10,7 @@ services:
             - ./.env
         environment:
             - PORT=8080
+            - HOSTNAME=auth_server
 
     nginx:
         image: nginx:alpine
