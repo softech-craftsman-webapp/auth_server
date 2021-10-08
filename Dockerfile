@@ -4,7 +4,7 @@ FROM golang:alpine as builder
 # Enable go modules
 ENV GO111MODULE=on
 
-# Install git. (alpine image does not have git in it)
+# Install git. (alpine image does not have curl in it)
 RUN apk update && apk add --no-cache curl
 
 # Set current working directory
