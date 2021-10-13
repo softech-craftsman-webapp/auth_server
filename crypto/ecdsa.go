@@ -2,6 +2,7 @@ package crypto
 
 import (
 	"crypto/ecdsa"
+	"os"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -12,7 +13,7 @@ import (
    |--------------------------------------------------------------------------
 */
 func EcdsaPublicKeyString() string {
-	publicKeyString := []byte(ReadFile("keys/access/ecdsa-public.pem"))
+	publicKeyString := []byte(ReadFile(os.Getenv("ACCESS_PUBLIC_PEM_FILE")))
 
 	return string(publicKeyString)
 }
@@ -23,7 +24,7 @@ func EcdsaPublicKeyString() string {
    |--------------------------------------------------------------------------
 */
 func EcdsaAccessPublicKey() (*ecdsa.PublicKey, error) {
-	publicKey := []byte(ReadFile("keys/access/ecdsa-public.pem"))
+	publicKey := []byte(ReadFile(os.Getenv("ACCESS_PUBLIC_PEM_FILE")))
 	key, err := jwt.ParseECPublicKeyFromPEM(publicKey)
 
 	return key, err
@@ -35,7 +36,7 @@ func EcdsaAccessPublicKey() (*ecdsa.PublicKey, error) {
    |--------------------------------------------------------------------------
 */
 func EcdsaRefreshPublicKey() (*ecdsa.PublicKey, error) {
-	publicKey := []byte(ReadFile("keys/refresh/ecdsa-public.pem"))
+	publicKey := []byte(ReadFile(os.Getenv("REFRESH_PUBLIC_PEM_FILE")))
 	key, err := jwt.ParseECPublicKeyFromPEM(publicKey)
 
 	return key, err
@@ -47,7 +48,7 @@ func EcdsaRefreshPublicKey() (*ecdsa.PublicKey, error) {
    |--------------------------------------------------------------------------
 */
 func EcdsaAccessPrivateKey() (*ecdsa.PrivateKey, error) {
-	privateKey := []byte(ReadFile("keys/access/ecdsa-private.pem"))
+	privateKey := []byte(ReadFile(os.Getenv("ACCESS_PRIVATE_PEM_FILE")))
 	key, err := jwt.ParseECPrivateKeyFromPEM(privateKey)
 
 	return key, err
@@ -59,7 +60,7 @@ func EcdsaAccessPrivateKey() (*ecdsa.PrivateKey, error) {
    |--------------------------------------------------------------------------
 */
 func EcdsaRefreshPrivateKey() (*ecdsa.PrivateKey, error) {
-	privateKey := []byte(ReadFile("keys/refresh/ecdsa-private.pem"))
+	privateKey := []byte(ReadFile(os.Getenv("REFRESH_PRIVATE_PEM_FILE")))
 	key, err := jwt.ParseECPrivateKeyFromPEM(privateKey)
 
 	return key, err

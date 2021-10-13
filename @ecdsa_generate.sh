@@ -7,12 +7,12 @@ mkdir -p keys/refresh
 
 # @AccessToken
 # private key
-openssl ecparam -genkey -name secp521r1 -noout -out keys/access/ecdsa-private.pem
+openssl ecparam -genkey -name secp521r1 -noout -out keys/access/private.pem
 # public key
-openssl ec -in keys/access/ecdsa-private.pem -pubout -out keys/access/ecdsa-public.pem
+openssl ec -in keys/access/private.pem -pubout -out keys/access/public.pem
 
 # @RefreshToken
 # private key
-openssl ecparam -genkey -name secp521r1 -noout -out keys/refresh/ecdsa-private.pem
+openssl ecparam -genkey -name secp521r1 -noout -out keys/refresh/private.pem
 # public key
-openssl ec -in keys/refresh/ecdsa-private.pem -pubout -out keys/refresh/ecdsa-public.pem 
+openssl ec -in keys/refresh/private.pem -pubout -out keys/refresh/public.pem 

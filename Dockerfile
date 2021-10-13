@@ -4,9 +4,6 @@ FROM golang:alpine as builder
 # Enable go modules
 ENV GO111MODULE=on
 
-# Install git. (alpine image does not have curl in it)
-RUN apk update && apk add --no-cache curl
-
 # Set current working directory
 WORKDIR /app
 
@@ -26,9 +23,6 @@ RUN go mod download
 # Now, copy the source code
 COPY . .
 
-# Note here: CGO_ENABLED is disabled for cross system compilation
-# It is also a common best practise.
-
 # Build the application.
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./bin/main .
 
@@ -39,10 +33,7 @@ FROM scratch
 # Copy the Pre-built binary file
 COPY --from=builder /app/bin/main .
 
-EXPOSE 8080
-
-# Generate RSA key for JWT
-RUN bash \@rsa_generate.sh
+EXPOSE 5000
 
 # Run executable
 CMD ["./main"]

@@ -2,6 +2,7 @@ package crypto
 
 import (
 	"crypto/rsa"
+	"os"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -12,7 +13,7 @@ import (
    |--------------------------------------------------------------------------
 */
 func RsaPublicKeyString() string {
-	publicKeyString := []byte(ReadFile("keys/access/rsa-public.pem"))
+	publicKeyString := []byte(ReadFile(os.Getenv("ACCESS_PUBLIC_PEM_FILE")))
 
 	return string(publicKeyString)
 }
@@ -23,7 +24,7 @@ func RsaPublicKeyString() string {
    |--------------------------------------------------------------------------
 */
 func RsaAccessPublicKey() (*rsa.PublicKey, error) {
-	publicKey := []byte(ReadFile("keys/access/rsa-public.pem"))
+	publicKey := []byte(ReadFile(os.Getenv("ACCESS_PUBLIC_PEM_FILE")))
 	key, err := jwt.ParseRSAPublicKeyFromPEM(publicKey)
 
 	return key, err
@@ -35,7 +36,7 @@ func RsaAccessPublicKey() (*rsa.PublicKey, error) {
    |--------------------------------------------------------------------------
 */
 func RsaRefreshPublicKey() (*rsa.PublicKey, error) {
-	publicKey := []byte(ReadFile("keys/refresh/rsa-public.pem"))
+	publicKey := []byte(ReadFile(os.Getenv("REFRESH_PUBLIC_PEM_FILE")))
 	key, err := jwt.ParseRSAPublicKeyFromPEM(publicKey)
 
 	return key, err
@@ -47,7 +48,7 @@ func RsaRefreshPublicKey() (*rsa.PublicKey, error) {
    |--------------------------------------------------------------------------
 */
 func RsaAccessPrivateKey() (*rsa.PrivateKey, error) {
-	privateKey := []byte(ReadFile("keys/access/rsa-private.pem"))
+	privateKey := []byte(ReadFile(os.Getenv("ACCESS_PRIVATE_PEM_FILE")))
 	key, err := jwt.ParseRSAPrivateKeyFromPEM(privateKey)
 
 	return key, err
@@ -59,7 +60,7 @@ func RsaAccessPrivateKey() (*rsa.PrivateKey, error) {
    |--------------------------------------------------------------------------
 */
 func RsaRefreshPrivateKey() (*rsa.PrivateKey, error) {
-	privateKey := []byte(ReadFile("keys/refresh/rsa-private.pem"))
+	privateKey := []byte(ReadFile(os.Getenv("REFRESH_PRIVATE_PEM_FILE")))
 	key, err := jwt.ParseRSAPrivateKeyFromPEM(privateKey)
 
 	return key, err

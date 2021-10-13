@@ -7,12 +7,12 @@ mkdir -p keys/refresh
 
 # @AccessToken
 # private key
-ssh-keygen -t rsa -b 4096 -E SHA512 -m PEM -P "" -f keys/access/rsa-private.pem
+ssh-keygen -t rsa -b 4096 -E SHA512 -m PEM -P "" -f keys/access/private.pem
 # public key
-openssl rsa -in keys/access/rsa-private.pem -pubout -outform PEM -out keys/access/rsa-public.pem
+openssl rsa -in keys/access/private.pem -pubout -outform PEM -out keys/access/public.pem
 
 # @RefreshToken
 # private key
-ssh-keygen -t rsa -b 4096 -E SHA512 -m PEM -P "" -f keys/refresh/rsa-private.pem
+ssh-keygen -t rsa -b 4096 -E SHA512 -m PEM -P "" -f keys/refresh/private.pem
 # public key
-openssl rsa -in keys/refresh/rsa-private.pem -pubout -outform PEM -out keys/refresh/rsa-public.pem
+openssl rsa -in keys/refresh/private.pem -pubout -outform PEM -out keys/refresh/public.pem
