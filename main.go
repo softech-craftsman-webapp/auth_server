@@ -14,7 +14,7 @@ import (
 // @version 1.0
 // @description Authentication API Service.
 
-// @host 127.0.0.1:8080
+// @host 127.0.0.1:5000
 // @BasePath /
 
 // @securityDefinitions.apiKey JWT
