@@ -11,7 +11,7 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-const TEMPLATE_PATH = "mailer/template.html"
+const TEMPLATE_PATH = os.Getenv("MAILER_TEMPLATE_PATH")
 
 type DialerOptions struct {
 	CONFIG_SMTP_HOST     string
