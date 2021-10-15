@@ -15,7 +15,7 @@ services:
             - REFRESH_PRIVATE_PEM_FILE=/app/keys/refresh/private.pem
             - ACCESS_PUBLIC_PEM_FILE=/app/keys/access/public.pem
             - ACCESS_PRIVATE_PEM_FILE=/app/keys/access/private.pem
-            - MAILER_TEMPLATE_PATH = /app/mailer/template.html
+            - MAILER_TEMPLATE_PATH=/app/mailer/template.html
             
     nginx:
         image: nginx:alpine
