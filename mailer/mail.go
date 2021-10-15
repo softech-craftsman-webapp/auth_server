@@ -11,8 +11,6 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-const TEMPLATE_PATH = os.Getenv("MAILER_TEMPLATE_PATH")
-
 type DialerOptions struct {
 	CONFIG_SMTP_HOST     string
 	CONFIG_SMTP_PORT     int
@@ -33,7 +31,7 @@ func Template(innerHTML template.HTML) string {
 	var data TemplateData
 	data.InnerHtml = innerHTML
 
-	t, err := template.ParseFiles(TEMPLATE_PATH)
+	t, err := template.ParseFiles(os.Getenv("MAILER_TEMPLATE_PATH"))
 	if err != nil {
 		log.Fatal(err)
 	}
