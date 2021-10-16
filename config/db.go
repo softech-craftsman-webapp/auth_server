@@ -16,8 +16,18 @@ func GetDB() *gorm.DB {
 	password := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
 	sslmode := os.Getenv("DB_SSLMODE")
+	timezone := os.Getenv("TZ")
 
-	connection := fmt.Sprintf("host=%v port=%v user=%v dbname=%v password=%v sslmode=%v", host, port, user, dbname, password, sslmode)
+	connection := fmt.Sprintf(
+		"host=%v port=%v user=%v dbname=%v password=%v sslmode=%v TimeZone=%v",
+		host,
+		port,
+		user,
+		dbname,
+		password,
+		sslmode,
+		timezone,
+	)
 
 	db, err := gorm.Open(
 		postgres.Open(connection),

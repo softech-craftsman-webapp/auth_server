@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"time"
 
 	bootstrap "auth_server/bootstrap"
 
@@ -22,9 +24,16 @@ import (
 // @name Authorization
 func main() {
 	err := godotenv.Load(".env")
-
 	if err != nil {
 		fmt.Println(".env file is not imported, in production kindly ignore this message")
+	}
+
+	if tz := os.Getenv("TZ"); tz != "" {
+		var err error
+		time.Local, err = time.LoadLocation(tz)
+		if err != nil {
+			log.Printf("error loading location '%s': %v\n", tz, err)
+		}
 	}
 
 	/*
