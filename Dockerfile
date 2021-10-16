@@ -36,9 +36,10 @@ FROM scratch
 # Copy the Pre-built binary file
 COPY --from=builder /app/bin/main .
 
-EXPOSE 5000
+# Timezone settings
 ENV TZ=Europe/Budapest
-ENV ZONEINFO=/zoneinfo.zip
+ENV ZONEINFO=/app/config/zoneinfo.zip
 
 # Run executable
+EXPOSE 5000
 CMD ["./main"]
