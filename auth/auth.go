@@ -23,7 +23,10 @@ import (
    |--------------------------------------------------------------------------
 */
 func Hash(password string) ([]byte, error) {
-	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	// Structure => secret:password
+	salted_password := []byte(os.Getenv("SECRET") + ":" + password)
+
+	return bcrypt.GenerateFromPassword([]byte(salted_password), bcrypt.DefaultCost)
 }
 
 /*
@@ -32,7 +35,10 @@ func Hash(password string) ([]byte, error) {
    |--------------------------------------------------------------------------
 */
 func VerifyPassword(hashedPassword, password string) error {
-	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	// Structure => secret:password
+	salted_password := []byte(os.Getenv("SECRET") + ":" + password)
+
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(salted_password))
 }
 
 /*
@@ -102,9 +108,15 @@ func GenerateSalt(email string, id string) string {
 	return salt
 }
 
+/*
+   |--------------------------------------------------------------------------
+   | Generate Token And Salt
+   |--------------------------------------------------------------------------
+*/
 func GenerateTokenAndSalt(email string, id string) (string, string) {
 	salt := GenerateSalt(email, id)
 	hasher := sha256.New()
+
 	// Structure => id:email:salt
 	hasher.Write([]byte(id + ":" + email + ":" + salt))
 
@@ -118,6 +130,7 @@ func GenerateTokenAndSalt(email string, id string) (string, string) {
 */
 func VerifyEmailToken(email string, id string, salt string, token string) bool {
 	hasher := sha256.New()
+
 	// Structure => id:email:salt
 	hasher.Write([]byte(id + ":" + email + ":" + salt))
 
@@ -162,6 +175,11 @@ func EmailVertification(email string, id string, minute int64, action string) er
 		return result.Error
 	}
 
+	/*
+		|----------------------------------------------------------------------
+		| Mails
+		|----------------------------------------------------------------------
+	*/
 	switch action {
 	case "VERIFY-EMAIL":
 		mailer.EmailVerificationSend(email, token)
