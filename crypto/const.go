@@ -1,6 +1,6 @@
 package crypto
 
-import "auth_server/vendor/github.com/golang-jwt/jwt"
+import "github.com/golang-jwt/jwt"
 
 /*
    |--------------------------------------------------------------------------
