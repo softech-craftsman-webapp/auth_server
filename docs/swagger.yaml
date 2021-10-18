@@ -113,9 +113,12 @@ definitions:
       name:
         type: string
     type: object
-host: 127.0.0.1:5000
+host: auth.hiringo.tech
 info:
-  contact: {}
+  contact:
+    email: admin@hiringo.tech
+    name: Emin Muhammadi
+    url: https://github.com/softech-craftsman-webapp/auth_server
   description: Authentication API Service.
   title: Authentication Server
   version: "1.0"
