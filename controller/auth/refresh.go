@@ -33,16 +33,6 @@ import (
 func Refresh(ctx echo.Context) error {
 	claims := ctx.Get("user").(*jwt.Token).Claims.(*view.JwtCustomClaims)
 
-	if claims.User.EmailVerifiedAt == nil {
-		resp := &view.Response{
-			Success: false,
-			Message: "User's email address should be verified",
-			Payload: nil,
-		}
-		// close db
-		return view.ApiView(http.StatusForbidden, ctx, resp)
-	}
-
 	db := config.GetDB()
 	expiration := time.Now().Add(time.Minute * controller.ACCESS_TOKEN_VALID_MINUTE).Unix()
 

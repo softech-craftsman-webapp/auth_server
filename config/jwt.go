@@ -59,7 +59,7 @@ func Guard(app *echo.Echo) (access_route *echo.Group, refresh_route *echo.Group)
 	}
 
 	// @Refresh
-	refresh_key, error := crypto.AccessPublicKey()
+	refresh_key, error := crypto.RefreshPublicKey()
 	if error != nil {
 		panic(error)
 	}
