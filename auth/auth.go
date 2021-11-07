@@ -8,7 +8,6 @@ import (
 	view "auth_server/view"
 	"crypto/sha256"
 	"encoding/hex"
-	"log"
 	"os"
 	"time"
 
@@ -73,7 +72,7 @@ func CreateAccessToken(user view.UserAuthView, minute int) (string, error) {
 
 	signKey, error := crypto.AccessPrivateKey()
 	if error != nil {
-		log.Fatal("Error in Private Key Signing @Access")
+		panic("Error in Private Key Signing @Access")
 	}
 
 	return token.SignedString(signKey)
@@ -89,7 +88,7 @@ func CreateRefreshToken(user view.UserAuthView, minute int) (string, error) {
 
 	signKey, error := crypto.RefreshPrivateKey()
 	if error != nil {
-		log.Fatal("Error in Private Key Signing @Refresh")
+		panic("Error in Private Key Signing @Refresh")
 	}
 
 	return token.SignedString(signKey)
@@ -147,7 +146,6 @@ func TimeValidation(until time.Time, minute int64) bool {
 	valid := until.Unix()
 	offset := 60 * minute
 
-	log.Println(now, valid, offset)
 	return valid-now >= offset
 }
 
