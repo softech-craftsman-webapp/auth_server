@@ -92,7 +92,7 @@ func Register(ctx echo.Context) error {
 	if result.Error != nil {
 		resp := &view.Response{
 			Success: false,
-			Message: result.Error.Error(),
+			Message: "User already exists",
 			Payload: nil,
 		}
 
