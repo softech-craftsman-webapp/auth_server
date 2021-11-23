@@ -124,7 +124,7 @@ func UpdateName(ctx echo.Context) error {
 	*/
 	if result.Error != nil {
 		resp := &view.Response{
-			Success: true,
+			Success: false,
 			Message: "Internal Server Error",
 			Payload: nil,
 		}

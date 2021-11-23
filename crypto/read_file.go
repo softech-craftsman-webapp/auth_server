@@ -10,7 +10,7 @@ func ReadFile(filePath string) string {
 	f, e := os.Open(filePath)
 
 	if e != nil {
-		panic(e)
+		panic(e.Error())
 	}
 
 	defer f.Close()

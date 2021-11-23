@@ -50,7 +50,7 @@ func GetUser(ctx echo.Context) error {
 
 	if result.Error != nil {
 		resp := &view.Response{
-			Success: true,
+			Success: false,
 			Message: "User not found",
 			Payload: nil,
 		}
