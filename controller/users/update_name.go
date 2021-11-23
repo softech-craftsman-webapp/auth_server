@@ -97,7 +97,7 @@ func UpdateName(ctx echo.Context) error {
 	if err != nil {
 		resp := &view.Response{
 			Success: false,
-			Message: "Old password is invalid",
+			Message: "Password is invalid",
 			Payload: nil,
 		}
 
