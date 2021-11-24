@@ -11,6 +11,18 @@ import (
 type CustomValidator struct {
 	Validator *validator.Validate
 }
+type fieldError struct {
+	err validator.FieldError
+}
+
+/*
+   |--------------------------------------------------------------------------
+   | ValidatorCustomErrorMessage
+   |--------------------------------------------------------------------------
+*/
+func ValidatorCustomErrorMessage(q fieldError) string {
+	return fmt.Sprintf("Validation failed on field %v", q.err.Field())
+}
 
 /*
    |--------------------------------------------------------------------------
@@ -26,7 +38,7 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 		}
 
 		for _, err := range err.(validator.ValidationErrors) {
-			customError = fmt.Sprintf("Validation failed on %v field", err.Value())
+			customError = ValidatorCustomErrorMessage(fieldError{err: err})
 		}
 
 		// Optionally, you could return the error to give each route more control over the status code
